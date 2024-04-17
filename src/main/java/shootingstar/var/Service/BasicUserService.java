@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shootingstar.var.dto.req.UserApplyVipDto;
 import shootingstar.var.dto.res.TicketListResDto;
+import shootingstar.var.dto.res.UserAuctionInvalidityResDto;
 import shootingstar.var.dto.res.UserAuctionParticipateResDto;
 import shootingstar.var.dto.res.UserAuctionSuccessResDto;
+import shootingstar.var.entity.auction.Auction;
 import shootingstar.var.enums.type.TicketSortType;
 import shootingstar.var.entity.User;
 import shootingstar.var.entity.VipApprovalType;
@@ -18,8 +20,11 @@ import shootingstar.var.repository.AuctionRepository;
 import shootingstar.var.repository.user.UserRepository;
 import shootingstar.var.repository.vip.VipInfoRepository;
 import shootingstar.var.repository.ticket.TicketRepository;
+import shootingstar.var.util.ParticipatingAuctionRedisUtil;
 
+import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 import static shootingstar.var.exception.ErrorCode.*;
 
@@ -30,6 +35,7 @@ public class BasicUserService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final AuctionRepository auctionRepository;
+    private final ParticipatingAuctionRedisUtil participatingAuctionRedisUtil;
 
     @Transactional
     public void applyVip(String userUUID , UserApplyVipDto userApplyVipDto){
@@ -69,8 +75,12 @@ public class BasicUserService {
     public Page<UserAuctionSuccessResDto> successAfterAuctionList(String userUUID, Pageable pageable){
         return auctionRepository.findAllSuccessAfterByUserUUID(userUUID, pageable);
     }
+
     public Page<UserAuctionParticipateResDto> participateAuctionList(String userUUID, Pageable pageable){
-        return auctionRepository.findAllParticipateByUserUUID(userUUID, pageable);
+        //auctin uuid 반환
+        Set<String> participateAuctionUUID = participatingAuctionRedisUtil.getParticipationList(userUUID);
+        Page<UserAuctionParticipateResDto> userAuctionParticipateResDtos = auctionRepository.findAllParticipateByUserUUID(userUUID, participateAuctionUUID, pageable);
+        return userAuctionParticipateResDtos;
     }
 
     public User findByUserUUID(String userUUID) {

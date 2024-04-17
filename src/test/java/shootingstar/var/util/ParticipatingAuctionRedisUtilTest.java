@@ -65,6 +65,8 @@ class ParticipatingAuctionRedisUtilTest {
 
         //then
         Set<String> participationList = participatingAuctionRedisUtil.getParticipationList(basic.getUserUUID());
+        //자기 유저유유아이디 -> 참여하는 경매 유유아이디
+        System.out.print(participationList);
         Assertions.assertThat(participationList).size().isEqualTo(2);
 
         participatingAuctionRedisUtil.deleteAll();

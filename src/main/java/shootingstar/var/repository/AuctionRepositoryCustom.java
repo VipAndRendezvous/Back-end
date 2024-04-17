@@ -9,12 +9,13 @@ import shootingstar.var.dto.res.UserAuctionParticipateResDto;
 import shootingstar.var.dto.res.UserAuctionSuccessResDto;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AuctionRepositoryCustom {
     Page<UserAuctionSuccessResDto> findAllSuccessAfterByUserUUID(String userUUID, Pageable pageable);
     Page<UserAuctionSuccessResDto> findAllSuccessBeforeByUserUUID(String userUUID, Pageable pageable);
 
-    Page<UserAuctionParticipateResDto> findAllParticipateByUserUUID(String userUUID, Pageable pageable);
+    Page<UserAuctionParticipateResDto> findAllParticipateByUserUUID(String userUUID, Set<String> participateAuctionUUID, Pageable pageable);
 
     Page<UserAuctionSuccessResDto> findAllVipSuccessBeforeByUserUUID(String userUUID, Pageable pageable);
     Page<UserAuctionSuccessResDto> findAllVipSuccessAfterByUserUUID(String userUUID, Pageable pageable);

@@ -15,6 +15,7 @@ import java.util.UUID;
 import shootingstar.var.entity.BaseTimeEntity;
 import shootingstar.var.entity.Bid;
 import shootingstar.var.entity.User;
+import shootingstar.var.entity.ticket.Ticket;
 import shootingstar.var.enums.type.AuctionType;
 
 @Entity
@@ -70,6 +71,9 @@ public class Auction extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "auction")
     private List<Bid> bids = new ArrayList<>();
+
+    @OneToOne(mappedBy = "auction")
+    private Ticket ticket;
 
     @Builder
     public Auction(User user, long minBidAmount, LocalDateTime meetingDate, String meetingLocation,
