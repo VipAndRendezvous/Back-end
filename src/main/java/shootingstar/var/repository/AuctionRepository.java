@@ -10,7 +10,6 @@ import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
     Optional<Auction> findByAuctionUUID(String auctionUUID);
-
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select a from Auction a where a.auctionUUID = :auctionUUID")
     Optional<Auction> findByAuctionUUIDWithPessimisticLock(String auctionUUID);

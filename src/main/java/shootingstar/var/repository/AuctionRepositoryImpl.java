@@ -4,6 +4,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -16,10 +17,12 @@ import shootingstar.var.enums.type.AuctionType;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static shootingstar.var.entity.QUser.user;
 import static shootingstar.var.entity.auction.QAuction.auction;
 import static shootingstar.var.entity.QBid.bid;
+import static shootingstar.var.entity.ticket.QTicket.ticket;
 
 public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
     private final JPAQueryFactory queryFactory;
@@ -33,10 +36,12 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
                         auction.user.profileImgUrl,
                         auction.user.nickname,
                         auction.meetingDate,
-                        user.nickname,
-                        auction.auctionUUID
+                        ticket.winner.nickname,
+                        auction.auctionUUID,
+                        ticket.ticketUUID
                 ))
                 .from(auction)
+                .leftJoin(ticket).on(ticket.auction.eq(auction))
                 .where(currentHighestBidderIdEq(userUUID), auction.auctionType.eq(AuctionType.SUCCESS), auction.meetingDate.before(LocalDateTime.now()))
                 .orderBy(auction.meetingDate.asc())
                 .fetch();
@@ -57,10 +62,12 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
                         auction.user.profileImgUrl,
                         auction.user.nickname,
                         auction.meetingDate,
-                        user.nickname,
-                        auction.auctionUUID
+                        ticket.winner.nickname,
+                        auction.auctionUUID,
+                        ticket.ticketUUID
                 ))
                 .from(auction)
+                .leftJoin(ticket).on(ticket.auction.eq(auction))
                 .where(currentHighestBidderIdEq(userUUID),auction.auctionType.eq(AuctionType.SUCCESS),auction.meetingDate.after(LocalDateTime.now()))
                 .orderBy(auction.meetingDate.desc())
                 .fetch();
@@ -75,8 +82,27 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
 
 
     @Override
-    public Page<UserAuctionParticipateResDto> findAllParticipateByUserUUID(String userUUID, Pageable pageable) {
-        return null;
+    public Page<UserAuctionParticipateResDto> findAllParticipateByUserUUID(String userUUID, Set<String> participateAuctionUUID, Pageable pageable) {
+        List<UserAuctionParticipateResDto> content = queryFactory
+                .select(new QUserAuctionParticipateResDto(
+                        auction.user.profileImgUrl,
+                        auction.user.nickname,
+                        auction.createdTime,
+                        auction.bidCount,
+                        auction.currentHighestBidAmount,
+                        auction.auctionUUID
+                ))
+                .from(auction)
+                .where(auction.auctionType.eq(AuctionType.PROGRESS), auction.auctionUUID.in(participateAuctionUUID))
+                .orderBy()
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(auction.count())
+                .from(auction)
+                .where(auction.auctionType.eq(AuctionType.PROGRESS), auction.auctionUUID.in(participateAuctionUUID));
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
 
@@ -91,9 +117,11 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
                         auction.user.nickname,
                         auction.meetingDate,
                         bid.bidderNickname,
-                        auction.auctionUUID
+                        auction.auctionUUID,
+                        ticket.ticketUUID
                 ))
                 .from(auction)
+                .leftJoin(ticket).on(ticket.auction.eq(auction))
                 .where(vipUserUUIDEq(userUUID),auction.auctionType.eq(AuctionType.SUCCESS),auction.meetingDate.before(LocalDateTime.now()))
                 .orderBy(auction.meetingDate.asc())
                 .fetch();
@@ -115,9 +143,11 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
                         auction.user.nickname,
                         auction.meetingDate,
                         bid.bidderNickname,
-                        auction.auctionUUID
+                        auction.auctionUUID,
+                        ticket.ticketUUID
                 ))
                 .from(auction)
+                .leftJoin(ticket).on(ticket.auction.eq(auction))
                 .where(vipUserUUIDEq(userUUID),auction.auctionType.eq(AuctionType.SUCCESS),auction.meetingDate.after(LocalDateTime.now()))
                 .orderBy(auction.meetingDate.desc())
                 .fetch();

@@ -26,12 +26,16 @@ public class UserAuctionSuccessResDto {
     @NotNull
     private String auctionUUID;
 
+    @NotNull
+    private String ticketUUID;
+
     @QueryProjection
-    public UserAuctionSuccessResDto(String profileImgUrl,String vipUserName, LocalDateTime meetDate, String basicUserName,String auctionUUID){
+    public UserAuctionSuccessResDto(String profileImgUrl,String vipUserName, LocalDateTime meetDate, String basicUserName,String auctionUUID, String ticketUUID){
         this.profileImgUrl = profileImgUrl;
         this.vipUserName = vipUserName;
         this.meetDate = meetDate;
         this.basicUserName = basicUserName;
         this.auctionUUID = auctionUUID;
+        this.ticketUUID = ticketUUID;
     }
 }
