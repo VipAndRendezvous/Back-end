@@ -19,7 +19,7 @@ public class PaymentsInfo {
 
     private String paymentUUID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @NotNull
     private User user;
