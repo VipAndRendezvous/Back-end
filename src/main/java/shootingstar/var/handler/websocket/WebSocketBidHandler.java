@@ -55,19 +55,18 @@ public class WebSocketBidHandler extends TextWebSocketHandler {
             String auctionUUID = bidReqDto.getAuctionUUID();
             addSessionToBid(session, auctionUUID);
 
-            String messageJson;
             if (bidReqDto.getIsBidMessage()) {
                 // 응찰 정보 저장
                 BidResDto resDto = bidService.participateAuction(getUserUUID(bidReqDto), bidReqDto);
-                messageJson = objectMapper.writeValueAsString(resDto);
+                String messageJson = objectMapper.writeValueAsString(resDto);
+                // key가 auctionUUID인 session에 메세지 전송
+                broadcastMessage(auctionUUID, messageJson);
 
             } else {
                 BidInfoResDto resDto = bidService.findBidInfo(auctionUUID);
-                messageJson = objectMapper.writeValueAsString(resDto);
+                String messageJson = objectMapper.writeValueAsString(resDto);
+                sendMessage(session, messageJson);
             }
-
-            // key가 auctionUUID인 session에 메세지 전송
-            broadcastMessage(auctionUUID, messageJson);
 
         } catch (CustomException e) {
             sendErrorMessage(session, e);
