@@ -57,7 +57,7 @@ public class AuctionService {
 
         validateMinBidAmount(reqDto, findUser);
 
-        LocalDateTime auctionCloseTime = LocalDateTime.now().plusDays(3);
+        LocalDateTime auctionCloseTime = LocalDateTime.now().plusMinutes(5);
 
         // 경매 생성
         Auction auction = Auction.builder()
