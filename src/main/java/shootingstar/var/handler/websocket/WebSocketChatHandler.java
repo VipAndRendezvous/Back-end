@@ -57,19 +57,19 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
             String chatRoomUUID = chatMessageDto.getChatRoomUUID();
             addSessionToChatRoom(session, chatRoomUUID);
 
-            String messageJson;
             if (chatMessageDto.getIsChatMessage()) {
                 // 채팅 메세지 저장
                 SaveChatMessageResDto resDto = chatService.saveChatMessage(getUserUUID(chatMessageDto), chatMessageDto);
-                messageJson = objectMapper.writeValueAsString(resDto);
+                String messageJson = objectMapper.writeValueAsString(resDto);
+                // key가 chatRoomUUID인 session에 메세지 전송
+                broadcastMessage(chatRoomUUID, messageJson);
+
             } else {
                 List<SaveChatMessageResDto> resDto = chatService.findMessageListByChatRoomUUID(
                         chatRoomUUID, getUserUUID(chatMessageDto), "");
-                messageJson = objectMapper.writeValueAsString(resDto);
+                String messageJson = objectMapper.writeValueAsString(resDto);
+                sendMessage(session, messageJson);
             }
-
-            // key가 chatRoomUUID인 session에 메세지 전송
-            broadcastMessage(chatRoomUUID, messageJson);
 
         } catch (CustomException e) {
             sendErrorMessage(session, e);

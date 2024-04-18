@@ -20,7 +20,7 @@ public class Exchange extends BaseTimeEntity {
 
     private String exchangeUUID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @NotNull
     private User user;
