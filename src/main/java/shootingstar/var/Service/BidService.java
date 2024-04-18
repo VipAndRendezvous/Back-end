@@ -108,7 +108,6 @@ public class BidService {
         return BidResDto.builder()
                 .currentHighestBidderNickname(currentUser.getNickname())
                 .currentHighestBidAmount(bidDto.getPrice())
-                .userPoint(currentUser.getPoint())
                 .build();
     }
 
