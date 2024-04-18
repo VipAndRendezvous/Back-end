@@ -8,12 +8,10 @@ import lombok.Data;
 public class BidResDto {
     private String currentHighestBidderNickname;
     private long currentHighestBidAmount;
-    private BigDecimal userPoint;
 
     @Builder
-    public BidResDto(String currentHighestBidderNickname, long currentHighestBidAmount, BigDecimal userPoint) {
+    public BidResDto(String currentHighestBidderNickname, long currentHighestBidAmount) {
         this.currentHighestBidderNickname = currentHighestBidderNickname;
         this.currentHighestBidAmount = currentHighestBidAmount;
-        this.userPoint = userPoint;
     }
 }
