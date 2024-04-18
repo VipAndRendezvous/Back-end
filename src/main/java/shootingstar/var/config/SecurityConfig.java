@@ -79,7 +79,7 @@ public class SecurityConfig {
                                 ).hasRole("VIP")
 
                                 .requestMatchers(
-                                        "/api/lookAtMe/test"
+                                        "/api/lookAtMe/**"
                                 ).hasRole("ADMIN")
 
 
