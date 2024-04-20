@@ -153,6 +153,9 @@ public enum ErrorCode {
     INCORRECT_FORMAT_JSON(BAD_REQUEST, "11000", "잘못된 형식의 JSON 데이터 입니다."),
     INCORRECT_FORMAT_IS_BID_MESSAGE(BAD_REQUEST, "11001", "잘못된 형식의 isBidMessage 입니다."),
     INCORRECT_FORMAT_IS_CHAT_MESSAGE(BAD_REQUEST, "11002", "잘못된 형식의 isChatMessage 입니다."),
+
+    S3_EMPTY_IMAGE(BAD_REQUEST, "12000", "빈 이미지 파일입니다."),
+    S3_UPLOAD_FAILED(INTERNAL_SERVER_ERROR, "12001", "이미지 업로드에 실패하였습니다."),
     ;
 
     private final HttpStatus httpStatus;

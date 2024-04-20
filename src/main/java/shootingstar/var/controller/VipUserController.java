@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -81,7 +82,7 @@ public class VipUserController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
     })
     @GetMapping("/auction/{auctionType}")
-    public ResponseEntity<?> getVipAuctionList(@NotBlank @PathVariable("auctionType") AuctionType auctionType,
+    public ResponseEntity<?> getVipAuctionList(@NotNull @PathVariable("auctionType") AuctionType auctionType,
                                                HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable) {
         String userUUID = jwtTokenProvider.getUserUUIDByRequest(request);
 
@@ -109,7 +110,7 @@ public class VipUserController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
     })
     @GetMapping("/auction/{auctionType}/successBefore")
-    public ResponseEntity<?> getVipAuctionSuccessBefore(@NotBlank @PathVariable("auctionType") AuctionType auctionType, HttpServletRequest request, @PageableDefault(size =10)Pageable pageable){
+    public ResponseEntity<?> getVipAuctionSuccessBefore(@NotNull @PathVariable("auctionType") AuctionType auctionType, HttpServletRequest request, @PageableDefault(size =10)Pageable pageable){
         if(!auctionType.equals(AuctionType.SUCCESS)){
             throw new CustomException(ErrorCode.VIP_AUCTION_SUCCESS_ACCESS_DENIED);
         }
@@ -128,7 +129,7 @@ public class VipUserController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
     })
     @GetMapping("/auction/{auctionType}/successAfter")
-    public ResponseEntity<?> getVipAuctionSuccessAfter(@NotBlank @PathVariable("auctionType") AuctionType auctionType,
+    public ResponseEntity<?> getVipAuctionSuccessAfter(@NotNull @PathVariable("auctionType") AuctionType auctionType,
                                                        HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
         if(!auctionType.equals(AuctionType.SUCCESS)){
             //auctionType이 success가 아닌경우

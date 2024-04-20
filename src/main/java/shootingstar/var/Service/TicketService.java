@@ -1,6 +1,7 @@
 package shootingstar.var.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -101,7 +102,7 @@ public class TicketService {
         TicketMeetingTime ticketMeetingTime = TicketMeetingTime.builder()
                 .ticket(ticket)
                 .userNickname(findUser.getNickname())
-                .startMeetingTime(LocalDateTime.parse(reqDto.getStartMeetingTime()))
+                .startMeetingTime(LocalDateTime.now())
                 .build();
         ticketMeetingTimeRepository.save(ticketMeetingTime);
     }
