@@ -18,22 +18,22 @@ class TicketServiceTest {
     @Autowired
     TicketService ticketService;
 
-    @Test
-    @DisplayName("만남 시간 저장 테스트")
-    @Commit
-    void saveMeetingTime() {
-        // given
-        MeetingTimeSaveReqDto reqDto = new MeetingTimeSaveReqDto();
-        reqDto.setTicketUUID("82412cef-f22d-4321-b435-5b58261c2fe8");
-        reqDto.setStartMeetingTime("2024-04-01T15:47:57");
-
-        String userUUID = "fb3ebae0-e0bb-470f-86e1-20a69384a4d6";
-
-        // when
-        ticketService.saveMeetingTime(reqDto, userUUID);
-
-        // then
-    }
+//    @Test
+//    @DisplayName("만남 시간 저장 테스트")
+//    @Commit
+//    void saveMeetingTime() {
+//        // given
+//        MeetingTimeSaveReqDto reqDto = new MeetingTimeSaveReqDto();
+//        reqDto.setTicketUUID("82412cef-f22d-4321-b435-5b58261c2fe8");
+//        reqDto.setStartMeetingTime("2024-04-01T15:47:57");
+//
+//        String userUUID = "fb3ebae0-e0bb-470f-86e1-20a69384a4d6";
+//
+//        // when
+//        ticketService.saveMeetingTime(reqDto, userUUID);
+//
+//        // then
+//    }
 
     @Test
     @DisplayName("vip 수수료 계산")

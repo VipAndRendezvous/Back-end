@@ -122,6 +122,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
                 ))
                 .from(auction)
                 .leftJoin(ticket).on(ticket.auction.eq(auction))
+                .leftJoin(bid).on(bid.auction.eq(auction))
                 .where(vipUserUUIDEq(userUUID),auction.auctionType.eq(AuctionType.SUCCESS),auction.meetingDate.before(LocalDateTime.now()))
                 .orderBy(auction.meetingDate.asc())
                 .fetch();
@@ -148,6 +149,7 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom{
                 ))
                 .from(auction)
                 .leftJoin(ticket).on(ticket.auction.eq(auction))
+                .leftJoin(bid).on(bid.auction.eq(auction))
                 .where(vipUserUUIDEq(userUUID),auction.auctionType.eq(AuctionType.SUCCESS),auction.meetingDate.after(LocalDateTime.now()))
                 .orderBy(auction.meetingDate.desc())
                 .fetch();
