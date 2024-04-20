@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.POST;
 import shootingstar.var.Service.UserAuthService;
 import shootingstar.var.dto.req.AccessKakaoReqDto;
 import shootingstar.var.dto.res.AccessKakaoResDto;
@@ -158,7 +159,7 @@ public class UserAuthController {
                     description = "Redis JSON 파싱 에러",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))}),
     })
-    @PatchMapping("/withdrawal")
+    @PostMapping("/withdrawal")
     public ResponseEntity<String> withdrawal(HttpServletRequest request, HttpServletResponse response) {
         String userUUID = tokenProvider.getUserUUIDByRequest(request);
         String refreshToken = TokenUtil.getTokenFromCookie(request);

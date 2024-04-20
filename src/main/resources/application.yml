@@ -7,7 +7,7 @@ spring:
 
   profiles:
 #    include: database, redis, mail, jwt, storage, port
-    include: database, mail, jwt, port, oauth, redis, iamport
+    include: database, mail, jwt, port, oauth, redis, iamport, s3
 
 logging:
   level:
