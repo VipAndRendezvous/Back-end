@@ -16,10 +16,10 @@ public class VipDetailResDto {
     private String vipIntroduce;
     private List<ProgressAuctionResDto> progressAuctionList;
     private List<VipReceiveReviewResDto> receiveReviewList;
-    private boolean isFollow;
+    private String isFollow;
 
     @QueryProjection
-    public VipDetailResDto(String vipUserUUID, String vipProfileImgUrl, String vipNickname, Double vipRating, String vipJop, String vipCareer, String vipIntroduce, boolean isFollow) {
+    public VipDetailResDto(String vipUserUUID, String vipProfileImgUrl, String vipNickname, Double vipRating, String vipJop, String vipCareer, String vipIntroduce, String isFollow) {
         this.vipUserUUID = vipUserUUID;
         this.vipProfileImgUrl = vipProfileImgUrl;
         this.vipNickname = vipNickname;
