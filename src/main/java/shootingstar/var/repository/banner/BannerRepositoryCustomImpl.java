@@ -22,7 +22,8 @@ public class BannerRepositoryCustomImpl implements BannerRepositoryCustom {
         return queryFactory
                 .select(new QGetBannerResDto(
                         banner.bannerImgUrl,
-                        banner.targetUrl
+                        banner.targetUrl,
+                        banner.bannerUUID
                 ))
                 .from(banner)
                 .fetch();

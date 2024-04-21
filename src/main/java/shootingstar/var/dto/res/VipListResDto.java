@@ -9,10 +9,10 @@ public class VipListResDto {
     private String profileImgUrl;
     private String vipNickname;
     private Double vipRate;
-    private boolean isFollow;
+    private String isFollow;
 
     @QueryProjection
-    public VipListResDto(String vipUUID, String profileImgUrl, String vipNickname, Double vipRate, boolean isFollow) {
+    public VipListResDto(String vipUUID, String profileImgUrl, String vipNickname, Double vipRate, String isFollow) {
         this.vipUUID = vipUUID;
         this.profileImgUrl = profileImgUrl;
         this.vipNickname = vipNickname;

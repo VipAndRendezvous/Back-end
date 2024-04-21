@@ -1,11 +1,15 @@
 package shootingstar.var.repository.user;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -22,6 +26,7 @@ import static shootingstar.var.entity.QUser.user;
 import static shootingstar.var.entity.QVipInfo.vipInfo;
 import static shootingstar.var.entity.auction.QAuction.auction;
 
+@Slf4j
 public class UserRepositoryCustomImpl implements UserRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
@@ -42,7 +47,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
                         user.profileImgUrl,
                         user.nickname,
                         user.rating,
-                        getIsFollow(userUUID)
+                        getIsFollow(userUUID, user.userUUID)
                 ))
                 .from(user)
                 .where(vipCondition.and(searchCondition))
@@ -70,7 +75,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
                         vipInfo.vipJob,
                         vipInfo.vipCareer,
                         vipInfo.vipIntroduce,
-                        getIsFollow(userUUID)
+                        getIsFollow(userUUID, vipInfo.user.userUUID)
                 ))
                 .from(vipInfo)
                 .where(vipInfo.user.userUUID.eq(vipUUID))
@@ -180,15 +185,20 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression getIsFollow(String userUUID) {
-        return userUUID != null ?
-                JPAExpressions
-                        .select(follow.followId.count())
-                        .from(follow)
-                        .where(follow.follower.userUUID.eq(userUUID)
-                                .and(follow.following.userUUID.eq(user.userUUID)))
-                        .gt(0L) : Expressions.asBoolean(false).isTrue();
+    private Expression<String> getIsFollow(String userUUID, StringPath vipUUID) {
+        if (userUUID != null) {
+            return queryFactory
+                    .select(follow.followUUID)
+                    .from(follow)
+                    .where(follow.follower.userUUID.eq(userUUID)
+                            .and(follow.following.userUUID.eq(vipUUID)))
+                    .limit(1);
+        } else {
+            return Expressions.constant("");
+        }
     }
+
+
 
     private BooleanExpression checkSearch (String search) {
         if (!hasText(search)) {

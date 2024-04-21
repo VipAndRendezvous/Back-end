@@ -75,8 +75,8 @@ public class UserController {
     @GetMapping("/follow/{followingUUID}")
     public ResponseEntity<String> follow(@NotBlank @PathVariable("followingUUID") String followingUUID, HttpServletRequest request) {
         String userUUID = jwtTokenProvider.getUserUUIDByRequest(request);
-        userService.follow(followingUUID,userUUID);
-        return ResponseEntity.ok("follow success");
+        String followUUID = userService.follow(followingUUID, userUUID);
+        return ResponseEntity.ok(followUUID);
     }
 
     @Operation(summary = "언팔로우")
