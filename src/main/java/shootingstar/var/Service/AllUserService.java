@@ -51,7 +51,7 @@ public class AllUserService {
                     .kakaoId(reqDto.getKakaoId())
                     .name(reqDto.getUserName())
                     .nickname(reqDto.getNickname())
-                    .phone(reqDto.getPhoneNumber())
+                    .phone("000-0000-0000")
                     .email(reqDto.getEmail())
                     .profileImgUrl(reqDto.getProfileImgUrl())
                     .userType(UserType.ROLE_BASIC)
