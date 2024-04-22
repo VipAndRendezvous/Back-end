@@ -16,7 +16,6 @@ public class UserSignupReqDto {
     @Email
     @NotBlank
     private String email;
-    @NotBlank
     private String phoneNumber;
     @URL
     @NotBlank
