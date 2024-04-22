@@ -85,8 +85,8 @@ public class UserService {
     }
 
     @Transactional
-    public void reportReview(Long reviewId){
-        Review review = findByReviewId(reviewId);
+    public void reportReview(String reviewUUID){
+        Review review = findByReviewId(reviewUUID);
         ReviewReport reviewReport = new ReviewReport(
                 review,
                 review.getReviewContent(),
@@ -112,8 +112,8 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public Review findByReviewId(Long reviewId){
-        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+    public Review findByReviewId(String reviewUUID){
+        Optional<Review> optionalReview = reviewRepository.findByReviewUUID(reviewUUID);
         if(optionalReview.isEmpty()){
             throw new CustomException(REVIEW_NOT_FOUND);
         }

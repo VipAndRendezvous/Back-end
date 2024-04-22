@@ -191,8 +191,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
                     .select(follow.followUUID)
                     .from(follow)
                     .where(follow.follower.userUUID.eq(userUUID)
-                            .and(follow.following.userUUID.eq(vipUUID)))
-                    .limit(1);
+                            .and(follow.following.userUUID.eq(vipUUID)));
         } else {
             return Expressions.constant("");
         }
