@@ -124,9 +124,9 @@ public class UserController {
                     @Content(mediaType = "text/plain", schema = @Schema(implementation = String.class))
             })
     })
-    @PostMapping("/review/report/{reviewId}")
-    public ResponseEntity<String> reportReview(@Valid @PathVariable("reviewId") Long reviewId){
-        userService.reportReview(reviewId);
+    @PostMapping("/review/report/{reviewUUID}")
+    public ResponseEntity<String> reportReview(@Valid @PathVariable("reviewUUID") String reviewUUID){
+        userService.reportReview(reviewUUID);
         return ResponseEntity.ok().body("review report success");
     }
 
